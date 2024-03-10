@@ -15,7 +15,3 @@ docker-compose up
 默认设备上限数是10，有需要可在`./iotclient/target/iot.properties`中修改。
 
 数据库建表时已经插入了5个设备和1个用户。
-
-实验报告在`./document`中。
-
-录制的演示视频在`./video`中。
