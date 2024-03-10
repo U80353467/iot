@@ -1,0 +1,45 @@
+.login {
+    width: 300px;
+    margin: 100px auto;
+    }
+
+    .login-form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    }
+
+    .login-form-button {
+    width: 100%;
+        background:dodgerblue;
+    }
+
+    .login-form-change-button {
+        width: 100%;
+        background:deepskyblue;
+    }
+
+    .site-form-item-icon {
+    color: #1890ff;
+    }
+
+    .login-form-forgot {
+    float: right;
+    }
+
+    .login-form-button {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    background: #1890ff;
+    color: #fff;
+    border: none;
+    }
+
+    .login-form-button:hover {
+    background: #40a9ff;
+    }
+
+    .register-link {
+    text-align: center;
+    }

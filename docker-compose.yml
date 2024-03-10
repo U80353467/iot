@@ -1,0 +1,67 @@
+version: '3'
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - 3000:3000
+  backend:
+    build: ./backend
+    ports:
+      - 8080:8080
+    depends_on:
+      - database
+      - redis
+  database:
+    image: mysql:latest
+    restart: always
+    volumes:
+      - ./database/mydir:/mydir
+      - ./database/datadir:/var/lib/mysql
+      - ./database/source:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=iot__
+      - MYSQL_ROOT_HOST=%
+      - TZ=Asia/Shanghai
+    command:
+      ["mysqld", "--lower_case_table_names=1", "--authentication_policy=caching_sha2_password"]
+    hostname:
+      database
+    ports:
+      - 3307:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      timeout: 1s
+      interval: 2s
+      retries: 10
+  redis:
+    image: redis:latest
+    volumes:
+      - ./redis/datadir:/data
+      - ./redis/conf/redis.windows.conf:/usr/local/etc/redis/redis.conf
+    command: 
+      redis-server /usr/local/etc/redis/redis.conf
+    hostname:
+      redis
+    ports:
+      - 6379:6379
+  mosquitto:
+    image: eclipse-mosquitto
+    privileged: true
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    hostname:
+      mosquitto
+    ports:
+      - 1883:1883
+  iotclient:
+    build: ./iotclient
+    depends_on:
+      - mosquitto
+  mqtt-server:
+    build: ./mqtt-server
+    depends_on:
+      database:
+        condition: service_healthy
